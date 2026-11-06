@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit écrans et système nerveux</title>
+<style>
+  :root {
+    --bg: #fbf8f1; --card: #ffffff; --ink: #1f2328; --muted: #5b6168; --line: #e3ddd0;
+    --accent: #2f5d8a; --accent-soft: #e8f0f8; --ok: #2e7d4f; --warn-bg: #fff4e0; --warn: #8a5a00;
+    --red: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: Arial, Helvetica, sans-serif; font-size: 19px; line-height: 1.7;
+    letter-spacing: .03em; word-spacing: .12em;
+  }
+  main { max-width: 820px; margin: 0 auto; padding: 0 16px 80px; }
+  header.top { padding: 28px 0 8px; }
+  h1 { font-size: 1.7rem; line-height: 1.25; margin: 0 0 4px; }
+  h2 { font-size: 1.35rem; line-height: 1.3; margin: 0 0 12px; }
+  h3 { font-size: 1.1rem; margin: 22px 0 8px; }
+  p { margin: 0 0 12px; }
+  a { color: var(--accent); }
+  .sub { color: var(--muted); margin: 0; }
+  nav.chips { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 10px 0; display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; border-bottom: 1px solid var(--line); }
+  nav.chips a { text-decoration: none; color: var(--accent); background: var(--accent-soft); padding: 6px 12px; border-radius: 999px; font-size: .85rem; white-space: nowrap; }
+  section.fiche { scroll-margin-top: 64px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px 22px 14px; margin: 22px 0; }
+  .tag { display: inline-block; font-size: .75rem; font-weight: bold; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+  .note { background: var(--warn-bg); color: #4a3500; border-radius: 10px; padding: 12px 14px; margin: 12px 0; font-size: .92rem; }
+  .start { background: var(--accent-soft); border-radius: 10px; padding: 12px 16px 6px; margin: 6px 0 16px; }
+  .start ol { margin: 0 0 8px; padding-left: 1.3em; }
+  .start li { margin-bottom: 6px; }
+  .why { color: var(--muted); font-size: .85rem; border-left: 3px solid var(--line); padding-left: 10px; margin: 8px 0 14px; }
+  details.parent > summary { cursor: pointer; font-weight: bold; color: var(--accent); }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; margin: 8px 0 14px; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; vertical-align: top; text-align: left; }
+  th { background: #f4f0e6; }
+  .tablewrap { overflow-x: auto; }
+
+  /* couleurs des zones de l'affiche */
+  .z1 { --c: #2f5d8a; --s: #e8f0f8; } .z2 { --c: #6b4fa0; --s: #f1ecf9; } .z3 { --c: #b85c00; --s: #fff1e2; }
+  .z4 { --c: #b3261e; --s: #fdecea; } .z5 { --c: #2e7d4f; --s: #e6f4ec; } .z6 { --c: #5b6168; --s: #f4f0e6; }
+  .num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--c); color: #fff; font-weight: bold; margin-right: 8px; letter-spacing: 0; flex: none; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+  .card { border: 1px solid var(--line); border-left: 6px solid var(--c, var(--line)); border-radius: 10px; padding: 10px 12px; font-size: .9rem; line-height: 1.55; }
+  .card b.t { display: block; font-size: 1.02rem; color: var(--c, var(--ink)); }
+  .card .src { display: block; margin-top: 6px; font-size: .8rem; color: var(--muted); }
+
+  /* mots */
+  .mots { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+  .mot { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: .9rem; line-height: 1.55; }
+  .mot .w { font-size: 1.1rem; font-weight: bold; }
+  .mot .s { color: var(--muted); }
+  .mot .ex { color: var(--muted); font-size: .85rem; margin-top: 4px; }
+
+  /* audio */
+  .player { border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin: 10px 0 16px; background: #fdfcf9; }
+  .player .ttl { font-weight: bold; margin-bottom: 6px; }
+  .player audio { width: 100%; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; align-items: center; }
+  button { font: inherit; font-size: .85rem; letter-spacing: .02em; cursor: pointer; border: 1px solid var(--accent); color: var(--accent); background: #fff; border-radius: 999px; padding: 6px 14px; min-height: 40px; }
+  button.on, button:hover { background: var(--accent); color: #fff; }
+  .small { font-size: .8rem; color: var(--muted); }
+
+  .mission { background: var(--accent-soft); border-radius: 10px; padding: 10px 12px; margin: 8px 0 12px; }
+  .reveal { display: none; margin-top: 10px; color: var(--ok); }
+  .reveal.show { display: block; }
+
+  /* questions */
+  .q { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 8px 0; }
+  .q .a { display: none; margin-top: 6px; color: var(--ok); font-size: .95rem; }
+  .q.show .a { display: block; }
+  .q button { margin-top: 6px; }
+  body.allans .q .a, body.allans .reveal { display: block; }
+  .check { display: flex; align-items: center; gap: 8px; font-size: .9rem; margin: 6px 0 2px; }
+  .check input { width: 22px; height: 22px; flex: none; }
+  .q .check { font-size: 1rem; margin: 0; }
+  #flash { min-height: 3.5em; font-size: 1.15rem; font-weight: bold; margin: 8px 0; }
+
+  /* schéma */
+  .chain { display: grid; gap: 4px; max-width: 520px; }
+  .step { border-radius: 10px; padding: 10px 12px; border: 2px solid var(--line); background: #fff; }
+  .step b { font-size: 1.05rem; }
+  .step .k { display: block; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .arrow { text-align: center; color: var(--muted); line-height: 1.35; font-size: .88rem; padding: 2px 0; }
+  .arrow .f { display: block; font-size: 1.3rem; color: var(--ink); }
+  .ecl { color: var(--red); font-weight: bold; font-size: .88rem; display: block; }
+  .game .pool { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+  .game .path { min-height: 2.4em; font-weight: bold; color: var(--ok); }
+  #gameMsg { min-height: 1.7em; font-weight: bold; }
+  button.done { background: var(--ok); border-color: var(--ok); color: #fff; opacity: .55; }
+
+  /* oral */
+  .bloc { border: 2px solid var(--c); border-radius: 12px; padding: 12px 14px; margin: 16px 0; }
+  .bloc h3 { display: flex; align-items: center; margin: 0 0 8px; }
+  .bloc .dep { background: var(--s); border-radius: 8px; padding: 8px 12px; font-weight: bold; font-size: 1.08rem; margin: 6px 0 10px; }
+  .bloc .dep::before { content: "Phrase de départ : "; display: block; font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--c); }
+  .bonus { color: var(--muted); }
+  #mesRegles { margin: 4px 0 10px; padding-left: 1.3em; }
+  #mesRegles li { margin-bottom: 4px; }
+  #timer { font-size: 2.6rem; font-weight: bold; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+  #timerMsg { min-height: 1.7em; font-weight: bold; }
+
+  @media (max-width: 520px) {
+    body { font-size: 18px; }
+    section.fiche { padding: 16px 14px 10px; }
+  }
+  @page { size: A4; margin: 14mm; }
+  @media print {
+    body { background: #fff; font-size: 12pt; }
+    nav.chips, .player, button, .noprint { display: none !important; }
+    section.fiche { break-before: page; border: none; padding: 0; }
+    section.fiche:first-of-type { break-before: auto; }
+    .q, .card, .mot, .step, .bloc, .mission, .note { break-inside: avoid; }
+    h2, h3 { break-after: avoid; }
+    .mots { grid-template-columns: repeat(3, 1fr); }
+    .reveal { display: block !important; }
+    details.parent > summary { display: none; }
+    * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<header class="top">
+  <h1>Les écrans et mon système nerveux</h1>
+  <p class="sub">SVT 4e · Activité 3 : les comportements à risque. Le kit d'Ethan : une affiche A3 et un oral de 3 minutes, pour le jeudi 19 novembre.</p>
+</header>
+
+<nav class="chips" aria-label="Fiches">
+  <a href="#adulte">Adulte</a>
+  <a href="#sujet">1. Le sujet</a>
+  <a href="#science">2. Les scientifiques</a>
+  <a href="#schema">3. Le schéma</a>
+  <a href="#regles">4. Me protéger</a>
+  <a href="#affiche">5. L'affiche</a>
+  <a href="#oral">6. L'oral</a>
+  <a href="#tester">7. Se tester</a>
+</nav>
+
+<!-- ============ ADULTE ============ -->
+<section class="fiche" id="adulte">
+  <span class="tag">Pour l'adulte qui aide</span>
+  <div class="start noprint">
+    <p><b>Pour commencer</b></p>
+    <ol>
+      <li><b>Imprimez <a href="affiche_pieces_a_imprimer.pdf">les pièces de l'affiche</a></b> avant la séance 3 : 7 pages, en couleur, taille réelle (100 %).</li>
+      <li><b>Le kit d'Ethan</b> se fait sur cette page (avec les audios) ou sur papier : <a href="kit_Activite3_ecrans.pdf">le kit à imprimer</a> (13 pages, réponses cachées).</li>
+      <li><b>Pour vous seulement :</b> <a href="kit_Activite3_ecrans_avec_reponses.pdf">le kit avec toutes les réponses</a> (15 pages). Ne le donnez pas à Ethan : il doit chercher d'abord.</li>
+      <li><b>Séance 1 : samedi 7 novembre</b>, 30 minutes. Le plan est juste en dessous.</li>
+    </ol>
+    <p class="small">Prenez toujours le même appareil : les cases cochées et les règles choisies restent dans ce navigateur.</p>
+  </div>
+  <h2>Le plan en 7 séances de 30 minutes</h2>
+  <details class="parent" open>
+    <summary>Comment utiliser ce kit (3 minutes de lecture)</summary>
+    <p><b>À rendre le jeudi 19 novembre :</b> une affiche A3 et un oral de 3 minutes sans notes. Le même jour : l'évaluation du chapitre « perturbations du système nerveux ».</p>
+    <div class="tablewrap">
+    <table>
+      <tr><th>Quand</th><th>Quoi</th></tr>
+      <tr><td>Séance 1<br>sam. 7 nov.</td><td>Fiche 1 : le sujet et les 10 mots. Fiche 2 : ce que disent les scientifiques, et la mission chercheur.</td></tr>
+      <tr><td>Séance 2<br>lun. 9 nov.</td><td>5 min : série 1 (fiche 7). Puis fiche 3 : le schéma et le jeu du chemin.</td></tr>
+      <tr><td>Séance 3<br>mer. 11 nov.</td><td>5 min : série 1. Fiche 4 : choisir 4 règles. Fiche 5 : le collage. <b>Imprimer les pièces avant.</b> Le collage peut déborder sur une 2e séance.</td></tr>
+      <tr><td>Séance 4<br>ven. 13 nov.</td><td>5 min : série 2. Fiche 6 : les blocs 1, 2 et 3 de l'oral.</td></tr>
+      <tr><td>Séance 5<br>dim. 15 nov.</td><td>5 min : série 1. Fiche 6 : les blocs 4 et 5, puis l'oral entier avec le chrono. S'enregistrer et réécouter.</td></tr>
+      <tr><td>Séance 6<br>mar. 17 nov.</td><td>Séries 2 et 3 (fiche 7). L'oral entier une fois, avec l'affiche.</td></tr>
+      <tr><td>Veille<br>mer. 18 nov.</td><td>L'oral entier 2 fois. 5 questions au hasard. Révision du reste du chapitre (cours du prof).</td></tr>
+      <tr><td>Jour J<br>jeu. 19 nov.</td><td>Rendre l'affiche, faire l'oral.</td></tr>
+    </table>
+    </div>
+    <p>Entre deux séances : écouter le résumé (fiche 7, 1 minute). Dates à décaler si besoin : l'important est de laisser 1 ou 2 jours entre les séances.</p>
+    <p><b>Les 4 règles :</b></p>
+    <ol>
+      <li><b>À l'oral d'abord.</b> Ethan répond en parlant. Il n'écrit rien à la main : tout est déjà imprimé.</li>
+      <li><b>Chercher avant de regarder.</b> Il essaie de répondre de mémoire, même faux. Ensuite seulement, on montre la réponse.</li>
+      <li><b>Je fais, on fait, tu fais.</b> Pour chaque bloc de l'oral : vous le dites d'abord, puis vous le dites ensemble, puis il le dit seul.</li>
+      <li><b>Court et espacé.</b> Chaque séance commence par 5 minutes de questions sur les séances d'avant (fiche 7).</li>
+    </ol>
+    <p><b>Ce qu'Ethan fait lui-même</b> (pour que ce soit vraiment son travail) : la mission chercheur sur un vrai site, le choix du titre et de ses 4 règles, la pose des 5 étiquettes du schéma, l'oral avec ses mots. <b>Ce que vous pouvez faire :</b> lire à voix haute, découper, tenir le chrono.</p>
+    <div class="note"><b>À ne pas dire, car c'est faux ou pas prouvé :</b> « les écrans abîment le cerveau » ou « rendent bête » ; « l'addiction aux écrans est une maladie reconnue » (seul le trouble du jeu vidéo l'est, par l'OMS) ; « les écrans, c'est comme une drogue » ; « le mode nuit ou les lunettes anti-lumière bleue suffisent ». Le message juste : pas trop, pas le soir, pas pendant les devoirs.</div>
+    <div class="note"><b>Pour le prof (si Ethan a un PAP) :</b> pendant l'oral, Ethan montre son affiche. Chaque zone est numérotée et correspond à une partie de l'oral. Ce n'est pas une feuille de notes : c'est un support visuel. On peut le signaler au prof avant.</div>
+    <p class="small noprint">Pour voir toutes les réponses sur cet écran, cliquez sur le bouton ci-dessous.</p>
+    <div class="row noprint">
+      <button type="button" id="allAns">Afficher toutes les réponses (pour vous)</button>
+    </div>
+  </details>
+</section>
+
+<!-- ============ 1. LE SUJET ============ -->
+<section class="fiche" id="sujet">
+  <span class="tag">Fiche 1</span>
+  <h2>Mon sujet : l'utilisation excessive des écrans</h2>
+  <div class="cards noprint">
+    <div class="card z1"><b class="t">🖼️ Une affiche A3</b>Un collage. Les textes sont déjà imprimés : tu choisis, tu poses, tu colles.</div>
+    <div class="card z5"><b class="t">🎤 Un oral de 3 minutes</b>Sans feuille. Mais l'affiche t'aide : chaque zone de l'affiche, c'est une partie de ton oral.</div>
+  </div>
+  <div class="player">
+    <div class="ttl">🔊 Ton sujet en 1 minute</div>
+    <audio controls preload="none" src="audio/0_le_sujet_en_1_minute.m4a"></audio>
+    <div class="row noprint"><span class="small">Vitesse de la voix :</span>
+      <button type="button" data-rate="0.85">Lent</button><button type="button" data-rate="1">Normal</button><button type="button" data-rate="1.15">Rapide</button></div>
+  </div>
+
+  <h3>Les 10 mots de ton sujet</h3>
+  <p>Écoute chaque mot, puis répète-le à voix haute. Les barres coupent le mot en syllabes.</p>
+  <div class="player">
+    <div class="ttl">🔊 Les 10 mots (3 minutes)</div>
+    <audio controls preload="none" src="audio/1_les_10_mots.m4a"></audio>
+  </div>
+  <div class="mots">
+    <div class="mot"><div class="w">système nerveux</div><div class="s">sys / tème / ner / veux</div>Tout ce qui transporte les messages dans le corps : organes des sens, nerfs, cerveau, moelle épinière.<div class="ex">Grâce à lui, je vois, je décide, je bouge.</div></div>
+    <div class="mot"><div class="w">organe des sens</div><div class="s">or / ga / ne / des / sens</div>Une partie du corps qui capte ce qui se passe autour.<div class="ex">L'œil voit l'écran.</div></div>
+    <div class="mot"><div class="w">message nerveux</div><div class="s">mes / sa / ge / ner / veux</div>Le signal qui voyage dans les nerfs.<div class="ex">L'œil envoie un message nerveux au cerveau.</div></div>
+    <div class="mot"><div class="w">nerf sensitif</div><div class="s">nerf / sen / si / tif</div>Va de l'organe des sens au centre nerveux.<div class="ex">Il part de l'œil et va au cerveau.</div></div>
+    <div class="mot"><div class="w">centre nerveux</div><div class="s">cen / tre / ner / veux</div>Le cerveau ou la moelle épinière. Il reçoit, et il décide.<div class="ex">Le cerveau décide de freiner.</div></div>
+    <div class="mot"><div class="w">nerf moteur</div><div class="s">nerf / mo / teur</div>Va du centre nerveux au muscle.<div class="ex">Il porte l'ordre de freiner.</div></div>
+    <div class="mot"><div class="w">temps de réaction</div><div class="s">temps / de / ré / ac / tion</div>Le temps entre voir et bouger.<div class="ex">Fatigué, il est plus long.</div></div>
+    <div class="mot"><div class="w">mélatonine</div><div class="s">mé / la / to / ni / ne</div>L'hormone du sommeil. Le cerveau la fabrique le soir, quand il fait noir.<div class="ex">La lumière des écrans la retarde.</div></div>
+    <div class="mot"><div class="w">notification</div><div class="s">no / ti / fi / ca / tion</div>Une alerte du téléphone : un son, une vibration, un message.<div class="ex">Chaque notification vole mon attention.</div></div>
+    <div class="mot"><div class="w">excessif</div><div class="s">ex / cé / sif</div>Trop. Plus que ce qui est bon pour moi.<div class="ex">Une utilisation excessive des écrans.</div></div>
+  </div>
+  <label class="check noprint"><input type="checkbox" data-store="mots"> J'ai écouté et répété les 10 mots</label>
+</section>
+
+<!-- ============ 2. LES SCIENTIFIQUES ============ -->
+<section class="fiche" id="science">
+  <span class="tag">Fiche 2</span>
+  <h2>Ce que disent les scientifiques</h2>
+  <p>À chaque fois, on sait <b>qui</b> l'a dit. C'est ça, une <b>source</b>.</p>
+  <div class="player">
+    <div class="ttl">🔊 Ce que disent les scientifiques (2 minutes)</div>
+    <audio controls preload="none" src="audio/2_ce_que_disent_les_scientifiques.m4a"></audio>
+  </div>
+  <div class="cards">
+    <div class="card z1"><b class="t">😴 Le sommeil</b>Un ado a besoin d'environ 9 heures de sommeil. Les ados français dorment en moyenne 7 h 45 : il manque plus d'une heure.<span class="src">Sources : Ameli (Assurance Maladie) · Commission écrans, 2024</span></div>
+    <div class="card z2"><b class="t">🌙 La lumière du soir</b>La lumière des écrans, le soir, bloque la mélatonine, l'hormone du sommeil. Les yeux des jeunes filtrent moins bien cette lumière.<span class="src">Source : ANSES</span></div>
+    <div class="card z3"><b class="t">🧠 Le cerveau a besoin de dormir</b>Le sommeil aide à se concentrer, à apprendre et à mémoriser.<span class="src">Source : Inserm</span></div>
+    <div class="card z4"><b class="t">🔔 Les notifications</b>Environ 1 ado sur 3 est réveillé la nuit par des notifications. Faire plusieurs choses à la fois sur un écran gêne l'attention et la mémoire.<span class="src">Sources : Ameli · Commission écrans, 2024</span></div>
+    <div class="card z5"><b class="t">🏆 Les applis</b>Les réseaux sociaux utilisent des astuces pour capter notre attention, comme les vidéos qui ne s'arrêtent jamais.<span class="src">Source : ANSES, 2025</span></div>
+    <div class="card z6"><b class="t">☀️ Les yeux</b>Passer au moins 2 heures dehors par jour aide à protéger les yeux de la myopie.<span class="src">Source : Commission écrans, 2024</span></div>
+  </div>
+  <div class="note"><b>La nuance (un scientifique est prudent) :</b> les écrans ne sont pas mauvais en eux-mêmes. Le problème, c'est trop d'écrans, le soir, et pendant les devoirs. « Les écrans, c'est une drogue » : ce n'est pas prouvé. Seul le trouble du jeu vidéo est reconnu comme une maladie par l'OMS (depuis 2019).</div>
+
+  <h3>🔎 Mission chercheur (avec ta tante)</h3>
+  <p>Le prof demande de chercher sur des sites scientifiques. Alors tu vas le faire pour de vrai. Ta tante peut lire la page à voix haute.</p>
+  <div class="mission">
+    <b>Mission 1.</b> Ouvre la page <a href="https://www.ameli.fr/assure/sante/themes/adolescents-sommeil/sommeil-de-l-adolescent-quelles-particularites" target="_blank" rel="noopener">Ameli : le sommeil de l'adolescent</a>.<br>
+    Cherche : <b>combien d'heures de sommeil faut-il à un ado de 14 à 17 ans ?</b><br>
+    <span class="small">Astuce : appuie sur Cmd + F (ou Ctrl + F), puis tape « heures ».</span>
+    <div class="row noprint"><button type="button" data-reveal="m1">Vérifier</button></div>
+    <div class="reveal" id="m1">9 heures en moyenne. Bravo : tu as trouvé une information sur un site scientifique. C'est ta source !</div>
+  </div>
+  <div class="mission">
+    <b>Mission 2 (bonus).</b> Ouvre la page <a href="https://www.ameli.fr/assure/sante/themes/adolescents-sommeil/comment-mieux-dormir-l-adolescence" target="_blank" rel="noopener">Ameli : comment mieux dormir</a>.<br>
+    Cherche : <b>combien de temps avant de dormir faut-il arrêter les écrans ?</b>
+    <div class="row noprint"><button type="button" data-reveal="m2">Vérifier</button></div>
+    <div class="reveal" id="m2">Idéalement 1 à 2 heures avant le coucher. Ta règle « pas d'écran 1 h avant de dormir » vient de là.</div>
+  </div>
+  <label class="check noprint"><input type="checkbox" data-store="mission"> Mission chercheur faite</label>
+</section>
+
+<!-- ============ 3. LE SCHÉMA ============ -->
+<section class="fiche" id="schema">
+  <span class="tag">Fiche 3</span>
+  <h2>Le schéma : le trajet du message nerveux</h2>
+  <p>C'est un trajet, comme un voyage en bus : un départ, des étapes, une arrivée.</p>
+  <div class="player">
+    <div class="ttl">🔊 Le schéma (1 minute 30)</div>
+    <audio controls preload="none" src="audio/3_le_schema.m4a"></audio>
+  </div>
+  <div class="chain">
+    <div class="step"><span class="k">Départ</span><b>📱 L'écran</b> : sa lumière arrive dans l'œil.</div>
+    <div class="step z2" style="border-color:var(--c)"><span class="k">1. Organe des sens</span><b>👁️ L'œil</b> voit l'écran.<span class="ecl">⚡ Trop d'écrans : les yeux fatiguent.</span></div>
+    <div class="arrow"><span class="f">↓</span>message nerveux dans le <b>2. nerf sensitif</b></div>
+    <div class="step z2" style="border-color:var(--c)"><span class="k">3. Centre nerveux</span><b>🧠 Le cerveau</b> reçoit, et il décide : « attention, une voiture, je freine ! »<span class="ecl">⚡ Trop d'écrans : moins de sommeil, moins d'attention, envie de recommencer.</span></div>
+    <div class="arrow"><span class="f">↓</span>message nerveux dans le <b>4. nerf moteur</b><span class="ecl">⚡ Cerveau fatigué : la réaction est plus lente.</span></div>
+    <div class="step z2" style="border-color:var(--c)"><span class="k">5. Arrivée : le muscle</span><b>💪 Le muscle</b> de la main bouge : je freine.</div>
+  </div>
+  <p style="margin-top:12px"><b>Retiens le chemin :</b> organe des sens → nerf sensitif → centre nerveux → nerf moteur → muscle.</p>
+
+  <div class="player game noprint" id="game">
+    <div class="ttl">🎮 Le jeu du chemin</div>
+    <p>Clique sur les 5 parties dans l'ordre, de l'œil jusqu'au muscle.</p>
+    <div class="path" id="gamePath">📱 Écran →</div>
+    <div class="pool" id="gamePool"></div>
+    <div id="gameMsg"></div>
+    <div class="row"><button type="button" id="gameReset">Recommencer</button></div>
+  </div>
+  <label class="check noprint"><input type="checkbox" data-store="schema"> Je sais dire le chemin sans regarder</label>
+</section>
+
+<!-- ============ 4. ME PROTÉGER ============ -->
+<section class="fiche" id="regles">
+  <span class="tag">Fiche 4</span>
+  <h2>Me protéger : choisis tes 4 règles</h2>
+  <p>Il y a 7 règles. Coche les <b>4</b> que tu trouves les plus utiles pour toi, et que tu sais expliquer. Le bouton « Pourquoi ? » te donne la raison : c'est ton argument scientifique.</p>
+  <div class="player">
+    <div class="ttl">🔊 Les 7 règles (1 minute)</div>
+    <audio controls preload="none" src="audio/4_les_7_regles.m4a"></audio>
+  </div>
+  <div class="q regle" data-q="Pourquoi : pas d'écran 1 h avant de dormir ?" data-oral="pas d'écran une heure avant de dormir, parce que ça retarde le sommeil.">
+    <label class="check"><input type="checkbox" data-store="r1"> <b>🌙 Pas d'écran 1 h avant de dormir</b></label>
+    <div class="a">Parce que ça retarde le sommeil : la lumière bloque la mélatonine, et on se couche plus tard.</div><button type="button" data-ans>Pourquoi ?</button></div>
+  <div class="q regle" data-q="Pourquoi : le téléphone dort hors de ma chambre ?" data-oral="le téléphone dort hors de ma chambre, parce que les notifications réveillent le cerveau.">
+    <label class="check"><input type="checkbox" data-store="r2"> <b>🛏️ Le téléphone dort hors de ma chambre</b></label>
+    <div class="a">Parce que les notifications réveillent le cerveau, même la nuit.</div><button type="button" data-ans>Pourquoi ?</button></div>
+  <div class="q regle" data-q="Pourquoi : « ne pas déranger » pendant les devoirs ?" data-oral="le mode « ne pas déranger » pendant les devoirs, parce que chaque alerte casse ma concentration.">
+    <label class="check"><input type="checkbox" data-store="r3"> <b>🔕 « Ne pas déranger » pendant les devoirs</b></label>
+    <div class="a">Parce que chaque alerte casse ma concentration, même si je ne réponds pas.</div><button type="button" data-ans>Pourquoi ?</button></div>
+  <div class="q regle" data-q="Pourquoi : un minuteur pour les jeux et les vidéos ?" data-oral="un minuteur pour les jeux et les vidéos, parce que les applis sont faites pour qu'on ne s'arrête pas.">
+    <label class="check"><input type="checkbox" data-store="r4"> <b>⏱️ Un minuteur pour les jeux et les vidéos</b></label>
+    <div class="a">Parce que les applis sont faites pour qu'on ne s'arrête pas : le minuteur s'arrête à ma place.</div><button type="button" data-ans>Pourquoi ?</button></div>
+  <div class="q regle" data-q="Pourquoi : toutes les 20 min, regarder loin 20 s ?" data-oral="toutes les vingt minutes, regarder loin pendant vingt secondes, parce que mes yeux se reposent.">
+    <label class="check"><input type="checkbox" data-store="r5"> <b>👀 Toutes les 20 min, regarder loin 20 s</b></label>
+    <div class="a">Parce que mes yeux se reposent. Attention : c'est un conseil de confort, pas encore bien prouvé pour les ados.</div><button type="button" data-ans>Pourquoi ?</button></div>
+  <div class="q regle" data-q="Pourquoi : sortir dehors chaque jour ?" data-oral="sortir dehors chaque jour, parce que la lumière du jour protège mes yeux de la myopie.">
+    <label class="check"><input type="checkbox" data-store="r6"> <b>☀️ Sortir dehors chaque jour</b></label>
+    <div class="a">Parce que la lumière du jour protège mes yeux de la myopie. Conseil : au moins 2 heures dehors par jour.</div><button type="button" data-ans>Pourquoi ?</button></div>
+  <div class="q regle" data-q="Pourquoi : remplacer un peu d'écran par du sport ?" data-oral="remplacer un peu d'écran par du sport, parce que bouger aide à mieux dormir.">
+    <label class="check"><input type="checkbox" data-store="r7"> <b>⚽ Remplacer un peu d'écran par du sport</b></label>
+    <div class="a">Parce que bouger aide à mieux dormir (de préférence avant 17 h).</div><button type="button" data-ans>Pourquoi ?</button></div>
+  <p id="nbRegles" style="font-weight:bold;margin-top:10px"></p>
+  <p class="small">Les règles 1, 2, 3 et 6 sont celles que les scientifiques soutiennent le plus.</p>
+
+  <h3>Défi (bonus) : essayer une règle pour de vrai</h3>
+  <p>Essaie une de tes règles pendant 3 soirs. À l'oral, si le prof demande « Et toi ? », tu pourras raconter.</p>
+  <div class="row noprint">
+    <label class="check"><input type="checkbox" data-store="defi1"> Soir 1</label>
+    <label class="check"><input type="checkbox" data-store="defi2"> Soir 2</label>
+    <label class="check"><input type="checkbox" data-store="defi3"> Soir 3</label>
+  </div>
+  <p class="small">Option : sur le téléphone, Réglages → Temps d'écran montre le temps moyen par jour. À regarder ensemble pour comprendre, pas pour gronder.</p>
+</section>
+
+<!-- ============ 5. L'AFFICHE ============ -->
+<section class="fiche" id="affiche">
+  <span class="tag">Fiche 5</span>
+  <h2>L'affiche : le collage</h2>
+  <p><b>Il te faut :</b> une feuille A3, des ciseaux, de la colle en bâton, et les pièces imprimées (<a href="affiche_pieces_a_imprimer.pdf">affiche_pieces_a_imprimer.pdf</a>, 7 pages, en couleur, taille réelle 100 %).</p>
+  <h3>Choisis ton titre</h3>
+  <div class="row">
+    <label class="check"><input type="radio" name="titre" value="A" data-radio="titre"> A. Trop d'écrans : mon cerveau dit stop !</label>
+    <label class="check"><input type="radio" name="titre" value="B" data-radio="titre"> B. Les écrans et mon système nerveux</label>
+    <label class="check"><input type="radio" name="titre" value="C" data-radio="titre"> C. Écrans : trop, c'est trop !</label>
+  </div>
+  <h3>Les 4 étapes</h3>
+  <label class="check"><input type="checkbox" data-store="c1"> 1. Découper les pièces (l'adulte peut aider : la marge blanche pardonne)</label>
+  <label class="check"><input type="checkbox" data-store="c2"> 2. Poser les pièces sur la feuille, sans colle</label>
+  <label class="check"><input type="checkbox" data-store="c3"> 3. Vérifier avec le plan (page 1 du PDF)</label>
+  <label class="check"><input type="checkbox" data-store="c4"> 4. Coller, en appuyant bien</label>
+  <div class="note"><b>Le schéma (page 4) est à compléter :</b> Ethan colle lui-même les 5 étiquettes jaunes au bon endroit. C'est comme ça qu'il apprend le chemin. La page 5 a le schéma déjà rempli : seulement si c'est vraiment trop dur.</div>
+  <h3>Ce que le prof demande, et où c'est sur l'affiche</h3>
+  <div class="tablewrap">
+  <table>
+    <tr><th>Le prof demande</th><th>Sur l'affiche</th></tr>
+    <tr><td>Le sujet</td><td><span class="num z1">1</span>Mon sujet</td></tr>
+    <tr><td>Le schéma du système nerveux perturbé</td><td><span class="num z2">2</span>Le schéma avec les éclairs</td></tr>
+    <tr><td>Les causes et conséquences</td><td><span class="num z3">3</span>Les causes · <span class="num z4">4</span>Les conséquences</td></tr>
+    <tr><td>Les moyens de se protéger</td><td><span class="num z5">5</span>Mes 4 règles + la conclusion</td></tr>
+    <tr><td>Les sources</td><td><span class="num z6">S</span>Mes sources</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ============ 6. L'ORAL ============ -->
+<section class="fiche" id="oral">
+  <span class="tag">Fiche 6</span>
+  <h2>L'oral : 3 minutes, 5 blocs</h2>
+  <p>Ton oral suit ton affiche : <b>zone 1, zone 2, zone 3, zone 4, zone 5</b>. Pendant l'oral, tu montres chaque zone. Chaque bloc commence par une <b>phrase de départ</b> : apprends-la par cœur. Le reste, tu peux le dire avec tes mots.</p>
+  <div class="note"><b>Pour chaque bloc :</b> 1. l'adulte le dit (ou on écoute l'audio). 2. On le dit ensemble. 3. Ethan le dit seul, en regardant l'affiche. Les phrases en gris sont en bonus : si l'oral est trop long, on les saute.</div>
+  <div class="player">
+    <div class="ttl">🔊 L'oral complet (2 minutes 50)</div>
+    <audio controls preload="none" src="audio/4_oral_complet.m4a"></audio>
+    <div class="row noprint"><span class="small">Vitesse de la voix :</span>
+      <button type="button" data-rate="0.85">Lent</button><button type="button" data-rate="1">Normal</button><button type="button" data-rate="1.15">Rapide</button></div>
+  </div>
+
+  <div class="bloc z1">
+    <h3><span class="num">1</span>Mon sujet</h3>
+    <div class="dep">Bonjour, mon sujet, c'est l'utilisation excessive des écrans.</div>
+    <p><span class="bonus">Téléphone, console, ordinateur, télé : on passe beaucoup de temps devant les écrans.</span> Ma question, c'est : qu'est-ce que trop d'écrans fait à notre système nerveux ?</p>
+    <div class="player"><audio controls preload="none" src="audio/4_oral_bloc_1.m4a"></audio></div>
+  </div>
+  <div class="bloc z2">
+    <h3><span class="num">2</span>Le schéma</h3>
+    <div class="dep">D'abord, voici comment marche le système nerveux.</div>
+    <p>Sur mon schéma, l'œil voit l'écran. L'œil est un organe des sens. Il envoie un message nerveux par le nerf sensitif jusqu'au cerveau. Le cerveau est un centre nerveux : il décide. Puis il envoie un message par le nerf moteur jusqu'au muscle, et le muscle bouge. Les éclairs rouges montrent où trop d'écrans perturbe : à l'œil, au cerveau, et vers le muscle.</p>
+    <div class="player"><audio controls preload="none" src="audio/4_oral_bloc_2.m4a"></audio></div>
+  </div>
+  <div class="bloc z3">
+    <h3><span class="num">3</span>Les causes</h3>
+    <div class="dep">Pourquoi les écrans perturbent le système nerveux ? Il y a trois causes.</div>
+    <p>Un : les écrans le soir. On se couche plus tard, et la lumière fait croire au cerveau qu'il fait encore jour. Il fabrique moins de mélatonine, l'hormone du sommeil. Deux : les notifications. Chaque alerte vole notre attention, même si on ne répond pas. Trois : les applis sont faites pour capter notre attention, avec les likes, les niveaux et les vidéos sans fin. <span class="bonus">Alors c'est dur de s'arrêter.</span></p>
+    <div class="player"><audio controls preload="none" src="audio/4_oral_bloc_3.m4a"></audio></div>
+  </div>
+  <div class="bloc z4">
+    <h3><span class="num">4</span>Les conséquences</h3>
+    <div class="dep">Quelles sont les conséquences ?</div>
+    <p>D'abord, on dort moins. Pourtant, un ado a besoin d'environ neuf heures de sommeil. Ensuite, un cerveau fatigué se concentre moins bien et retient moins bien ses leçons. Il réagit aussi plus lentement : à vélo, c'est dangereux. Enfin, les yeux fatiguent, et passer peu de temps dehors augmente le risque de myopie.</p>
+    <div class="player"><audio controls preload="none" src="audio/4_oral_bloc_4.m4a"></audio></div>
+  </div>
+  <div class="bloc z5">
+    <h3><span class="num">5</span>Me protéger</h3>
+    <div class="dep">Alors, comment se protéger ? Voici mes 4 règles.</div>
+    <ol id="mesRegles"></ol>
+    <p id="mesReglesNote" class="small"></p>
+    <p>Ma conclusion : les écrans, oui, mais pas trop, pas le soir, et pas pendant les devoirs. Mes sources sont en bas de l'affiche : Ameli, l'Inserm, l'ANSES et l'OMS. Merci. Avez-vous des questions ?</p>
+    <div class="player"><audio controls preload="none" src="audio/4_oral_bloc_5.m4a"></audio><div class="small">L'audio dit les règles 1, 2, 3 et 6.</div></div>
+  </div>
+
+  <div class="player noprint">
+    <div class="ttl">⏱️ Le chrono</div>
+    <div id="timer">0:00</div>
+    <div id="timerMsg" class="small">Objectif : environ 3 minutes.</div>
+    <div class="row"><button type="button" id="tStart">Démarrer</button><button type="button" id="tReset">Remettre à zéro</button></div>
+    <p class="small" style="margin-top:8px">Astuce : s'enregistrer avec l'application Dictaphone du téléphone, puis réécouter ensemble. On cherche une seule chose à améliorer à la fois.</p>
+  </div>
+  <label class="check noprint"><input type="checkbox" data-store="oral1"> Oral entier fait une fois</label>
+  <label class="check noprint"><input type="checkbox" data-store="oral2"> Oral entier fait sans regarder la fiche, seulement l'affiche</label>
+
+  <h3>Série 3 : les questions que le prof peut poser</h3>
+  <div class="q"><b>Les écrans, c'est toujours mauvais ?</b><div class="a">Non. Le problème, c'est trop d'écrans, le soir, et pendant les devoirs.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Où as-tu trouvé tes informations ?</b><div class="a">Sur des sites scientifiques : Ameli (l'Assurance Maladie), l'Inserm, l'ANSES, l'OMS, et le rapport de la Commission écrans.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>L'addiction aux écrans, c'est une maladie reconnue ?</b><div class="a">Non, ce n'est pas prouvé. Seul le trouble du jeu vidéo est reconnu comme une maladie par l'OMS, depuis 2019.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Toi, tu appliques ces règles ?</b><div class="a">Réponse honnête. Exemple : « J'essaie. Cette semaine, j'ai essayé de… » (voir le défi de la fiche 4).</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Le mode nuit ou les lunettes anti-lumière bleue, ça suffit ?</b><div class="a">Non, ce n'est pas prouvé. Le mieux, c'est d'arrêter les écrans avant de dormir.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>C'est quoi, un comportement à risque pour le système nerveux ?</b><div class="a">Un comportement qui peut perturber le fonctionnement du système nerveux. Exemple : trop d'écrans, qui fait moins dormir et réagir plus lentement.</div><button type="button" data-ans>Réponse</button></div>
+</section>
+
+<!-- ============ 7. SE TESTER ============ -->
+<section class="fiche" id="tester">
+  <span class="tag">Fiche 7</span>
+  <h2>Se tester (sans regarder)</h2>
+  <p>Ethan répond <b>à voix haute, de mémoire</b>. Une réponse fausse, ce n'est pas grave : chercher dans sa mémoire, c'est ce qui fait retenir. Ensuite, on regarde la réponse.</p>
+  <div class="player">
+    <div class="ttl">🔊 Le résumé pour réviser (1 minute)</div>
+    <audio controls preload="none" src="audio/5_resume_pour_reviser.m4a"></audio>
+  </div>
+
+  <h3>Série 1 : les mots et le schéma</h3>
+  <div class="row noprint">
+    <label class="check"><input type="checkbox" data-store="s1a"> Faite 1 fois</label>
+    <label class="check"><input type="checkbox" data-store="s1b"> 2 fois</label>
+    <label class="check"><input type="checkbox" data-store="s1c"> 3 fois</label>
+  </div>
+  <div class="q"><b>Que veut dire « excessif » ?</b><div class="a">Trop. Plus que ce qui est bon pour moi.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Dis le chemin du message nerveux, dans l'ordre.</b><div class="a">Organe des sens → nerf sensitif → centre nerveux → nerf moteur → muscle.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Quel organe des sens voit l'écran ?</b><div class="a">L'œil.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Donne un centre nerveux.</b><div class="a">Le cerveau (ou la moelle épinière).</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Quel nerf va de l'œil au cerveau ?</b><div class="a">Le nerf sensitif.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Quel nerf va du cerveau au muscle ?</b><div class="a">Le nerf moteur.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>C'est quoi, le temps de réaction ?</b><div class="a">Le temps entre le moment où je vois et le moment où je bouge.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>C'est quoi, la mélatonine ?</b><div class="a">L'hormone du sommeil. Le cerveau la fabrique le soir, quand il fait noir.</div><button type="button" data-ans>Réponse</button></div>
+
+  <h3>Série 2 : causes, conséquences, règles</h3>
+  <div class="row noprint">
+    <label class="check"><input type="checkbox" data-store="s2a"> Faite 1 fois</label>
+    <label class="check"><input type="checkbox" data-store="s2b"> 2 fois</label>
+  </div>
+  <div class="q"><b>Pourquoi les écrans le soir retardent le sommeil ?</b><div class="a">On se couche plus tard, et la lumière fait croire au cerveau qu'il fait jour : il fabrique moins de mélatonine.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Combien d'heures de sommeil faut-il à un ado ?</b><div class="a">Environ 9 heures.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Pourquoi les notifications gênent ?</b><div class="a">Chaque alerte vole l'attention, même si on ne répond pas. Et la nuit, elles réveillent.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Pourquoi c'est dur de s'arrêter ?</b><div class="a">Les applis sont faites pour capter notre attention : likes, niveaux, vidéos sans fin.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Donne 2 conséquences de trop d'écrans.</b><div class="a">Deux parmi : on dort moins · on se concentre et on retient moins bien · on réagit plus lentement · les yeux fatiguent.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Pourquoi on réagit plus lentement ?</b><div class="a">Le cerveau est fatigué, car il a manqué de sommeil : le temps de réaction est plus long.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Où sont les éclairs sur ton schéma ?</b><div class="a">À l'œil, au cerveau, et vers le muscle.</div><button type="button" data-ans>Réponse</button></div>
+  <div class="q"><b>Donne une règle pour te protéger, et dis pourquoi.</b><div class="a">Exemple : pas d'écran 1 h avant de dormir, parce que ça retarde le sommeil.</div><button type="button" data-ans>Réponse</button></div>
+
+  <h3>Série du chapitre (pour l'évaluation)</h3>
+  <p class="small">L'évaluation du 19 novembre porte sur tout le chapitre « perturbations du système nerveux ». Ces questions seront ajoutées avec le cours du prof (pas encore récupéré).</p>
+
+  <h3 class="noprint">Veille de l'oral : 5 questions au hasard</h3>
+  <div class="player noprint">
+    <div id="flash">Clique sur « Question au hasard ».</div>
+    <div class="a" id="flashA" style="display:none;color:var(--ok)"></div>
+    <div class="row">
+      <button type="button" id="flashNext">Question au hasard</button>
+      <button type="button" id="flashShow">Voir la réponse</button>
+    </div>
+  </div>
+</section>
+
+<p class="small">Sources : <a href="https://www.ameli.fr/assure/sante/themes/adolescents-sommeil/sommeil-de-l-adolescent-quelles-particularites">Ameli, sommeil de l'adolescent (2026)</a> · <a href="https://www.ameli.fr/assure/sante/themes/adolescents-sommeil/comment-mieux-dormir-l-adolescence">Ameli, mieux dormir (2025)</a> · <a href="https://www.inserm.fr/dossier/sommeil/">Inserm, dossier Sommeil</a> · <a href="https://www.anses.fr/fr/content/led-les-recommandations-de-lanses-pour-limiter-lexposition-la-lumiere-bleue">ANSES, lumière bleue (2019)</a> · <a href="https://www.anses.fr/system/files/AP2019-SA-0152-RA.pdf">ANSES, réseaux sociaux (2025)</a> · <a href="https://www.vie-publique.fr/files/rapport/pdf/293978.pdf">Commission écrans, « Enfants et écrans » (2024)</a> · <a href="https://www.who.int/standards/classifications/frequently-asked-questions/gaming-disorder">OMS, trouble du jeu vidéo (CIM-11)</a>. Voix de synthèse : voix « Thomas » de macOS.</p>
+</main>
+
+<script>
+(function () {
+  var store = {
+    get: function (k) { try { return localStorage.getItem('ecrans_' + k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem('ecrans_' + k, v); } catch (e) {} }
+  };
+
+  // Réponses une par une
+  document.querySelectorAll('[data-ans]').forEach(function (b) {
+    var label = b.textContent;
+    b.addEventListener('click', function () {
+      var q = b.closest('.q'); q.classList.toggle('show');
+      b.textContent = q.classList.contains('show') ? 'Cacher' : label;
+    });
+  });
+  // Missions
+  document.querySelectorAll('[data-reveal]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var r = document.getElementById(b.getAttribute('data-reveal'));
+      r.classList.toggle('show');
+      b.textContent = r.classList.contains('show') ? 'Cacher' : 'Vérifier';
+    });
+  });
+  // Toutes les réponses (adulte)
+  var all = document.getElementById('allAns');
+  all.addEventListener('click', function () {
+    document.body.classList.toggle('allans');
+    all.textContent = document.body.classList.contains('allans') ? 'Cacher toutes les réponses' : 'Afficher toutes les réponses (pour vous)';
+  });
+
+  // Vitesse
+  var rate = parseFloat(store.get('rate')) || 1;
+  function applyRate() {
+    document.querySelectorAll('audio').forEach(function (a) { a.playbackRate = rate; a.defaultPlaybackRate = rate; });
+    document.querySelectorAll('[data-rate]').forEach(function (b) { b.classList.toggle('on', parseFloat(b.getAttribute('data-rate')) === rate); });
+  }
+  document.querySelectorAll('[data-rate]').forEach(function (b) {
+    b.addEventListener('click', function () { rate = parseFloat(b.getAttribute('data-rate')); store.set('rate', rate); applyRate(); });
+  });
+  document.querySelectorAll('audio').forEach(function (a) {
+    a.addEventListener('play', function () {
+      a.playbackRate = rate;
+      document.querySelectorAll('audio').forEach(function (o) { if (o !== a) o.pause(); });
+    });
+  });
+  applyRate();
+
+  // Cases à cocher et choix mémorisés
+  document.querySelectorAll('[data-store]').forEach(function (c) {
+    var k = c.getAttribute('data-store');
+    c.checked = store.get(k) === '1';
+    c.addEventListener('change', function () { store.set(k, c.checked ? '1' : '0'); });
+  });
+  document.querySelectorAll('[data-radio]').forEach(function (r) {
+    var k = r.getAttribute('data-radio');
+    r.checked = store.get(k) === r.value;
+    r.addEventListener('change', function () { if (r.checked) store.set(k, r.value); });
+  });
+
+  // Mes 4 règles : compteur (fiche 4) et bloc 5 de l'oral (fiche 6)
+  var regles = Array.prototype.slice.call(document.querySelectorAll('.regle'));
+  var NUMS = ['Une', 'Deux', 'Trois', 'Quatre', 'Cinq', 'Six', 'Sept'];
+  function majRegles() {
+    var choisies = regles.filter(function (r) { return r.querySelector('input').checked; });
+    var n = choisies.length;
+    document.getElementById('nbRegles').textContent =
+      n === 4 ? '✅ Tu as choisi tes 4 règles.' :
+      n > 4 ? 'Tu en as choisi ' + n + ' : garde-en seulement 4.' :
+      'Tu as choisi ' + n + ' règle' + (n > 1 ? 's' : '') + ' sur 4.';
+    var liste = n ? choisies : [regles[0], regles[1], regles[2], regles[5]];
+    var ol = document.getElementById('mesRegles'); ol.innerHTML = '';
+    liste.forEach(function (r, i) {
+      var li = document.createElement('li'); li.style.listStyle = 'none';
+      li.textContent = NUMS[i] + ' : ' + r.getAttribute('data-oral');
+      ol.appendChild(li);
+    });
+    document.getElementById('mesReglesNote').textContent = n ? '' : '(Règles proposées. Choisis les tiennes dans la fiche 4 : elles s\'afficheront ici.)';
+  }
+  regles.forEach(function (r) { r.querySelector('input').addEventListener('change', majRegles); });
+  majRegles();
+
+  // Jeu du chemin
+  var ORDRE = ['Organe des sens', 'Nerf sensitif', 'Centre nerveux', 'Nerf moteur', 'Muscle'];
+  var pool = document.getElementById('gamePool'), path = document.getElementById('gamePath'), msg = document.getElementById('gameMsg'), etape = 0;
+  function melange(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function nouveauJeu() {
+    etape = 0; pool.innerHTML = ''; path.textContent = '📱 Écran →'; msg.textContent = ''; msg.style.color = '';
+    melange(ORDRE).forEach(function (nom) {
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = nom;
+      b.addEventListener('click', function () {
+        if (b.disabled) return;
+        if (nom === ORDRE[etape]) {
+          etape++; b.disabled = true; b.classList.add('done');
+          path.textContent += ' ' + nom + (etape < ORDRE.length ? ' →' : '');
+          msg.style.color = 'var(--ok)';
+          msg.textContent = etape < ORDRE.length ? 'Oui ! Et ensuite ?' : '🎉 Bravo ! Le chemin est complet. Dis-le à voix haute.';
+        } else {
+          msg.style.color = 'var(--warn)';
+          msg.textContent = 'Pas encore. Qu\'est-ce qui vient juste après ' + (etape ? '« ' + ORDRE[etape - 1] + ' »' : 'l\'écran') + ' ?';
+        }
+      });
+      pool.appendChild(b);
+    });
+  }
+  document.getElementById('gameReset').addEventListener('click', nouveauJeu);
+  nouveauJeu();
+
+  // Chrono
+  var t0 = 0, cumul = 0, tick = null, tStart = document.getElementById('tStart'), tEl = document.getElementById('timer'), tMsg = document.getElementById('timerMsg');
+  function affiche() {
+    var s = Math.floor((cumul + (tick ? Date.now() - t0 : 0)) / 1000);
+    tEl.textContent = Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2);
+    if (s >= 210) { tEl.style.color = 'var(--warn)'; tMsg.textContent = 'Un peu long : saute les phrases en gris.'; }
+    else if (s >= 150) { tEl.style.color = 'var(--ok)'; tMsg.textContent = 'Bien : environ 3 minutes.'; }
+    else { tEl.style.color = ''; tMsg.textContent = 'Objectif : environ 3 minutes.'; }
+  }
+  tStart.addEventListener('click', function () {
+    if (tick) { cumul += Date.now() - t0; clearInterval(tick); tick = null; tStart.textContent = 'Reprendre'; }
+    else { t0 = Date.now(); tick = setInterval(affiche, 250); tStart.textContent = 'Pause'; }
+    affiche();
+  });
+  document.getElementById('tReset').addEventListener('click', function () {
+    clearInterval(tick); tick = null; cumul = 0; tStart.textContent = 'Démarrer'; affiche();
+  });
+
+  // Question au hasard (toutes les questions de la page)
+  var qs = Array.prototype.map.call(document.querySelectorAll('.q'), function (q) {
+    return { q: q.getAttribute('data-q') || q.querySelector('b').textContent, a: q.querySelector('.a').textContent };
+  });
+  var cur = -1, flash = document.getElementById('flash'), flashA = document.getElementById('flashA');
+  document.getElementById('flashNext').addEventListener('click', function () {
+    var n; do { n = Math.floor(Math.random() * qs.length); } while (qs.length > 1 && n === cur);
+    cur = n; flash.textContent = qs[n].q; flashA.textContent = qs[n].a; flashA.style.display = 'none';
+  });
+  document.getElementById('flashShow').addEventListener('click', function () {
+    if (cur >= 0) flashA.style.display = 'block';
+  });
+})();
+</script>
+</body>
+</html>
